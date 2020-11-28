@@ -42,7 +42,7 @@ import java.lang.annotation.Target;
  * is being used. If a {@link DependsOn}-annotated class is declared via XML,
  * {@link DependsOn} annotation metadata is ignored, and
  * {@code <bean depends-on="..."/>} is respected instead.
- *
+ * 作用， A依赖B，则先初始化 B
  * @author Juergen Hoeller
  * @since 3.0
  */

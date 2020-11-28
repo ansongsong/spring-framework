@@ -411,7 +411,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				eventType = ((PayloadApplicationEvent<?>) applicationEvent).getResolvableType();
 			}
 		}
-
+		// 早期事件，以 是否初始化多播器来 定义是否是早期事件
 		// Multicast right now if possible - or lazily once the multicaster is initialized
 		if (this.earlyApplicationEvents != null) {
 			this.earlyApplicationEvents.add(applicationEvent);
@@ -544,7 +544,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
 				postProcessBeanFactory(beanFactory);
-
+				// 调用 BeanFactory 的后置处理器
 				// Invoke factory processors registered as beans in the context.
 				invokeBeanFactoryPostProcessors(beanFactory);
 
@@ -553,13 +553,13 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				// Initialize message source for this context.
 				initMessageSource();
-
+				// 初始化多播器
 				// Initialize event multicaster for this context.
 				initApplicationEventMulticaster();
-
+				// spring boot 来启动 tomcat 的 使用 这个方法 来 启动的，早期事件的由来
 				// Initialize other special beans in specific context subclasses.
 				onRefresh();
-
+				// 注册 ApplicationListener 监听器，并发送事件 回调 ApplicationListener  invokeListener
 				// Check for listener beans and register them.
 				registerListeners();
 
@@ -851,12 +851,13 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		for (String listenerBeanName : listenerBeanNames) {
 			getApplicationEventMulticaster().addApplicationListenerBean(listenerBeanName);
 		}
-
+		// 处理早期事件，以是否初始化多播器来定义是否 为早期事件
 		// Publish early application events now that we finally have a multicaster...
 		Set<ApplicationEvent> earlyEventsToProcess = this.earlyApplicationEvents;
 		this.earlyApplicationEvents = null;
 		if (!CollectionUtils.isEmpty(earlyEventsToProcess)) {
 			for (ApplicationEvent earlyEvent : earlyEventsToProcess) {
+				// 调用 多播器，广播事件
 				getApplicationEventMulticaster().multicastEvent(earlyEvent);
 			}
 		}
@@ -889,10 +890,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// Stop using the temporary ClassLoader for type matching.
 		beanFactory.setTempClassLoader(null);
-
+		// 冻结所有配置
 		// Allow for caching all bean definition metadata, not expecting further changes.
 		beanFactory.freezeConfiguration();
-
+		// 核心 初始化非延迟加载单例
 		// Instantiate all remaining (non-lazy-init) singletons.
 		beanFactory.preInstantiateSingletons();
 	}

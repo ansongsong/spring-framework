@@ -101,7 +101,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * normal {@code BeanFactory} implementations are not.
 	 * @param registry the {@code BeanFactory} to load bean definitions into, in the form
 	 * of a {@code BeanDefinitionRegistry}
-	 * @param useDefaultFilters whether to include the default filters for the
+	 * @param useDefaultFilters whether to include the default filters for the  是否使用默认的扫描策略
 	 * {@link org.springframework.stereotype.Component @Component},
 	 * {@link org.springframework.stereotype.Repository @Repository},
 	 * {@link org.springframework.stereotype.Service @Service}, and
@@ -110,6 +110,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * @see #setEnvironment
 	 */
 	public ClassPathBeanDefinitionScanner(BeanDefinitionRegistry registry, boolean useDefaultFilters) {
+		// useDefaultFilters 是否使用默认的扫描策略
 		this(registry, useDefaultFilters, getOrCreateEnvironment(registry));
 	}
 
@@ -163,6 +164,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		this.registry = registry;
 
 		if (useDefaultFilters) {
+			// 注册默认的 filter
 			registerDefaultFilters();
 		}
 		setEnvironment(environment);

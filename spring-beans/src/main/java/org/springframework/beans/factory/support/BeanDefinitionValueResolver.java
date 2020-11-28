@@ -296,7 +296,7 @@ class BeanDefinitionValueResolver {
 	}
 
 	/**
-	 * Resolve a reference to another bean in the factory.
+	 * Resolve a reference to another bean in the factory. 解决引用问题
 	 */
 	@Nullable
 	private Object resolveReference(Object argName, RuntimeBeanReference ref) {
@@ -315,6 +315,7 @@ class BeanDefinitionValueResolver {
 					bean = parent.getBean(beanType);
 				}
 				else {
+
 					bean = parent.getBean(String.valueOf(doEvaluate(ref.getBeanName())));
 				}
 			}
